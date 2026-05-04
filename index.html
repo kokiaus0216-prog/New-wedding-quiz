@@ -175,8 +175,8 @@
     h1 .line1 { font-size: clamp(34px, 9.5vw, 62px); }
     h1 .line2 { font-size: clamp(43px, 13vw, 84px); letter-spacing: -0.075em; }
     h1 .line3 {
-      font-size: clamp(18px, 4.85vw, 32px);
-      letter-spacing: -0.075em;
+      font-size: clamp(16px, 4vw, 26px);
+      letter-spacing: -0.08em;
       line-height: 1.05;
       white-space: nowrap;
     }
@@ -196,9 +196,9 @@
       z-index: 3;
       margin-top: 12px;
       display: grid;
-      grid-template-columns: 210px 1fr;
+      grid-template-columns: 260px 1fr;
       align-items: center;
-      gap: 2px;
+      gap: 0px;
     }
 
     .image-blend {
@@ -206,10 +206,10 @@
       z-index: 5;
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
       justify-content: center;
       background: transparent;
-      margin-left: -26px;
+      margin-left: -40px;
       margin-bottom: 0;
     }
 
@@ -224,11 +224,11 @@
     }
 
     .character-label {
-      margin-top: 6px;
-      width: 220px;
+      margin-top: 10px;
+      width: 280px;
       text-align: center;
       color: var(--orange);
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 900;
       letter-spacing: .04em;
       position: relative;
@@ -246,9 +246,18 @@
       border-radius: 22px;
       padding: 12px;
       font-weight: 900;
-      line-height: 1.38;
+      line-height: 1.45;
       box-shadow: 5px 5px 0 var(--yellow);
       text-align: left;
+    }
+
+    .hero-speech {
+      font-size: clamp(18px, 4.3vw, 28px);
+      line-height: 1.28;
+      min-width: 0;
+      padding: 14px 10px;
+      text-align: center;
+      margin-left: -10px;
     }
 
     .speech::before {
@@ -681,8 +690,8 @@
       .event-info { grid-template-columns: 1fr 1fr; }
       .hero-card { grid-template-columns: 260px 1fr; }
       .hero-card .character {
-      width: 220px;
-      max-width: 220px;
+      width: 280px;
+      max-width: 280px;
     }
       .counts { grid-template-columns: 1fr 1fr; }
       .bottom-characters { grid-template-columns: 1fr 1fr; }
@@ -714,14 +723,14 @@
           <img class="character" src="./couple_down.png" alt="かえでとこうき">
           <div class="character-label">かえでとこうき</div>
         </div>
-        <div class="speech">私のドレスの色を<br>予想してね！</div>
+        <div class="speech hero-speech">私のドレスの色を<br>予想してね！</div>
       </div>
     </section>
 
     <section id="votePage">
       <div class="prize">
         <h2>🏆 景品獲得のチャンス！</h2>
-        <p>ドレスカラーと再入場曲の両方当てることができた方には、景品獲得のチャンスが！</p>
+        <p>ドレスカラーと再入場曲の両方当てることができた方には、景品獲得のチャンスが！</p><p class="small" style="margin-top:8px;">投票期限：2026年6月6日 12:00まで</p>
       </div>
 
       <div id="formPanel" class="panel">
@@ -756,12 +765,16 @@
         <div id="formMessage" class="message"></div>
       </div>
 
-      <h2>投票完了したよ。</h2>
+      <div id="completePanel" class="panel complete" style="display:none;">
+        <div class="complete-image-wrap">
+          <img src="./couple_chair.png" alt="投票完了">
+        </div>
+        <h2>投票完了したよ。</h2>
         <p>披露宴中盤の結果発表をお楽しみに！</p>
         <button class="admin-button" onclick="resetForAnotherVote()">別の人が投票する</button>
       </div>
 
-      <div class="bottom-characters">
+<div class="bottom-characters">
         <div class="mini-row">
           <img class="character" src="./koki.png" alt="こうき">
           <div class="speech">予想できたら投票ボタンを押してね！</div>
@@ -835,7 +848,7 @@
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     // ★ここをFirebaseの設定値に置き換えてください
-  const firebaseConfig = {
+const firebaseConfig = {
     apiKey: "AIzaSyDWcumv9qBQcfKk48T20vA6Ipp65eYX34E",
     authDomain: "wedding-quiz-0606.firebaseapp.com",
     projectId: "wedding-quiz-0606",
@@ -845,6 +858,7 @@
   };
 
     const ADMIN_PASSCODE = "202606060606";
+    const VOTE_DEADLINE = new Date("2026-06-06T12:00:00+09:00");
     const CORRECT_DRESS = "ピンク";
     const CORRECT_BGM = "サンボマスター「世界はそれを愛と呼ぶんだぜ」";
 
@@ -952,12 +966,17 @@
       document.querySelectorAll(".option").forEach(btn => btn.classList.remove("selected"));
       document.getElementById("formPanel").style.display = "block";
       document.getElementById("completePanel").style.display = "none";
+      hideMessage("formMessage");
       showVote();
-      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     window.submitVote = async function() {
       hideMessage("formMessage");
+
+      if (new Date() >= VOTE_DEADLINE) {
+        showMessage("formMessage", "投票受付は終了しました。");
+        return;
+      }
 
       if (!isFirebaseReady) {
         showMessage("formMessage", "Firebase設定がまだです。");
