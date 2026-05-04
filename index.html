@@ -174,7 +174,12 @@
 
     h1 .line1 { font-size: clamp(34px, 9.5vw, 62px); }
     h1 .line2 { font-size: clamp(43px, 13vw, 84px); letter-spacing: -0.075em; }
-    h1 .line3 { font-size: clamp(22px, 6.2vw, 40px); letter-spacing: -0.055em; line-height: 1.08; }
+    h1 .line3 {
+      font-size: clamp(18px, 4.85vw, 32px);
+      letter-spacing: -0.075em;
+      line-height: 1.05;
+      white-space: nowrap;
+    }
 
     .event-info {
       position: relative;
@@ -189,18 +194,23 @@
     .hero-card {
       position: relative;
       z-index: 3;
-      margin-top: 16px;
+      margin-top: 12px;
       display: grid;
-      grid-template-columns: 165px 1fr;
+      grid-template-columns: 210px 1fr;
       align-items: center;
-      gap: 10px;
+      gap: 2px;
     }
 
     .image-blend {
       position: relative;
       z-index: 5;
-      display: inline-block;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
       background: transparent;
+      margin-left: -26px;
+      margin-bottom: 0;
     }
 
     .character {
@@ -214,13 +224,18 @@
     }
 
     .character-label {
-      margin-top: -8px;
-      color: rgba(23,33,58,.68);
-      font-size: 12px;
+      margin-top: 6px;
+      width: 220px;
+      text-align: center;
+      color: var(--orange);
+      font-size: 13px;
       font-weight: 900;
       letter-spacing: .04em;
       position: relative;
       z-index: 6;
+      text-shadow: 2px 2px 0 rgba(255,255,255,.85);
+      line-height: 1.1;
+      white-space: nowrap;
     }
 
     .speech {
@@ -231,7 +246,7 @@
       border-radius: 22px;
       padding: 12px;
       font-weight: 900;
-      line-height: 1.45;
+      line-height: 1.38;
       box-shadow: 5px 5px 0 var(--yellow);
       text-align: left;
     }
@@ -379,7 +394,7 @@
     .song-artist {
       display: block;
       font-size: 16px;
-      color: var(--navy);
+      color: var(--ink);
       font-weight: 900;
     }
 
@@ -388,6 +403,7 @@
       margin-top: 2px;
       font-size: 17px;
       font-weight: 900;
+      color: var(--ink);
     }
 
     .note {
@@ -498,6 +514,19 @@
       font-size: 18px;
       font-weight: 900;
       margin: 0 0 14px;
+    }
+
+    .another-button {
+      width: 100%;
+      border: 5px solid var(--navy);
+      border-radius: 22px;
+      background: var(--orange);
+      color: #fff;
+      padding: 16px;
+      font-family: inherit;
+      font-weight: 900;
+      font-size: 20px;
+      box-shadow: 7px 7px 0 var(--yellow);
     }
 
     .admin-login { text-align: center; }
@@ -650,7 +679,11 @@
 
     @media (min-width: 640px) {
       .event-info { grid-template-columns: 1fr 1fr; }
-      .hero-card { grid-template-columns: 220px 1fr; }
+      .hero-card { grid-template-columns: 260px 1fr; }
+      .hero-card .character {
+      width: 220px;
+      max-width: 220px;
+    }
       .counts { grid-template-columns: 1fr 1fr; }
       .bottom-characters { grid-template-columns: 1fr 1fr; }
     }
@@ -681,7 +714,7 @@
           <img class="character" src="./couple_down.png" alt="かえでとこうき">
           <div class="character-label">かえでとこうき</div>
         </div>
-        <div class="speech">私のドレスの色を予想してね！</div>
+        <div class="speech">私のドレスの色を<br>予想してね！</div>
       </div>
     </section>
 
@@ -723,13 +756,9 @@
         <div id="formMessage" class="message"></div>
       </div>
 
-      <div id="completePanel" class="panel complete" style="display:none;">
-        <div class="complete-image-wrap">
-          <img src="./couple_chair.png" alt="投票完了">
-        </div>
-        <h2>投票完了したよ。</h2>
+      <h2>投票完了したよ。</h2>
         <p>披露宴中盤の結果発表をお楽しみに！</p>
-        <button class="admin-button" onclick="window.scrollTo({top:0,behavior:'smooth'})">ページ上部へ戻る</button>
+        <button class="admin-button" onclick="resetForAnotherVote()">別の人が投票する</button>
       </div>
 
       <div class="bottom-characters">
@@ -806,13 +835,13 @@
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     // ★ここをFirebaseの設定値に置き換えてください
-    const firebaseConfig = {
+  const firebaseConfig = {
     apiKey: "AIzaSyDWcumv9qBQcfKk48T20vA6Ipp65eYX34E",
     authDomain: "wedding-quiz-0606.firebaseapp.com",
     projectId: "wedding-quiz-0606",
     storageBucket: "wedding-quiz-0606.firebasestorage.app",
     messagingSenderId: "121941557137",
-    appId: "1:121941557137:web:7f3fbe88505574789c6430"
+    appId: "1:121941557137:web:54d2e644c206804b9c6430"
   };
 
     const ADMIN_PASSCODE = "202606060606";
@@ -888,8 +917,8 @@
         const btn = document.createElement("button");
         btn.className = "option";
         const inner = item.twoLine
-          ? `<span class="song-artist">♪ ${item.artist}</span><span class="song-title">${item.title}</span>`
-          : `<span class="song-title">♪ ${item.label}</span>`;
+          ? `<span class="song-artist">♪ ${item.artist}</span><span class="song-title">「${item.title}」</span>`
+          : `<span class="song-title">♪ ${item.artist}「${item.title}」</span>`;
         btn.innerHTML = `${inner}${item.note ? `<span class="note">${item.note}</span>` : ""}`;
         btn.onclick = () => {
           selectedBgm = item.label;
@@ -901,6 +930,7 @@
     }
 
     window.showVote = function() {
+      document.getElementById("completePanel").style.display = "none";
       document.getElementById("votePage").style.display = "block";
       document.getElementById("adminPage").style.display = "none";
       document.getElementById("voteTab").classList.add("active");
@@ -908,10 +938,22 @@
     }
 
     window.showAdmin = function() {
+      document.getElementById("completePanel").style.display = "none";
       document.getElementById("votePage").style.display = "none";
       document.getElementById("adminPage").style.display = "block";
       document.getElementById("voteTab").classList.remove("active");
       document.getElementById("adminTab").classList.add("active");
+    }
+
+    window.resetForAnotherVote = function() {
+      document.getElementById("name").value = "";
+      selectedDress = "";
+      selectedBgm = "";
+      document.querySelectorAll(".option").forEach(btn => btn.classList.remove("selected"));
+      document.getElementById("formPanel").style.display = "block";
+      document.getElementById("completePanel").style.display = "none";
+      showVote();
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     window.submitVote = async function() {
@@ -942,8 +984,11 @@
 
         document.getElementById("voteButton").disabled = false;
         document.getElementById("voteButton").textContent = "投票する！ VOTE NOW";
-        document.getElementById("formPanel").style.display = "none";
+        document.getElementById("votePage").style.display = "none";
+        document.getElementById("adminPage").style.display = "none";
         document.getElementById("completePanel").style.display = "block";
+        document.getElementById("voteTab").classList.add("active");
+        document.getElementById("adminTab").classList.remove("active");
         window.scrollTo({ top: 0, behavior: "smooth" });
       } catch (error) {
         console.error(error);
