@@ -196,7 +196,7 @@
       z-index: 3;
       margin-top: 12px;
       display: grid;
-      grid-template-columns: 260px 1fr;
+      grid-template-columns: 245px minmax(0, 1fr);
       align-items: center;
       gap: 0px;
     }
@@ -209,7 +209,7 @@
       align-items: center;
       justify-content: center;
       background: transparent;
-      margin-left: -40px;
+      margin-left: -80px; /* さらに左へ */
       margin-bottom: 0;
     }
 
@@ -225,7 +225,7 @@
 
     .character-label {
       margin-top: 10px;
-      width: 280px;
+      width: 305px;
       text-align: center;
       color: var(--orange);
       font-size: 14px;
@@ -252,12 +252,14 @@
     }
 
     .hero-speech {
-      font-size: clamp(18px, 4.3vw, 28px);
-      line-height: 1.28;
-      min-width: 0;
-      padding: 14px 10px;
+      font-size: clamp(15px, 3.6vw, 21px);
+      line-height: 1.2;
+      min-width: 160px;
+      max-width: 200px; /* 小さめ固定で絶対はみ出さない */
+      padding: 12px 10px;
       text-align: center;
-      margin-left: -10px;
+      margin-left: -70px; /* キャラ寄りに */
+      white-space: normal;
     }
 
     .speech::before {
@@ -690,8 +692,8 @@
       .event-info { grid-template-columns: 1fr 1fr; }
       .hero-card { grid-template-columns: 260px 1fr; }
       .hero-card .character {
-      width: 280px;
-      max-width: 280px;
+      width: 305px;
+      max-width: 305px;
     }
       .counts { grid-template-columns: 1fr 1fr; }
       .bottom-characters { grid-template-columns: 1fr 1fr; }
@@ -723,7 +725,7 @@
           <img class="character" src="./couple_down.png" alt="かえでとこうき">
           <div class="character-label">かえでとこうき</div>
         </div>
-        <div class="speech hero-speech">私のドレスの色を<br>予想してね！</div>
+        <div class="speech hero-speech">私のドレスの<br>色を予想<br>してね！</div>
       </div>
     </section>
 
@@ -766,6 +768,15 @@
       </div>
 
       <div id="completePanel" class="panel complete" style="display:none;">
+        <div class="complete-image-wrap">
+          <img src="./couple_chair.png" alt="投票完了">
+        </div>
+        <h2>投票完了したよ。</h2>
+        <p>披露宴中盤の結果発表をお楽しみに！</p>
+        <button class="admin-button" onclick="resetForAnotherVote()">別の人が投票する</button>
+      </div>
+
+<div id="completePanel" class="panel complete" style="display:none;">
         <div class="complete-image-wrap">
           <img src="./couple_chair.png" alt="投票完了">
         </div>
@@ -848,7 +859,7 @@
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     // ★ここをFirebaseの設定値に置き換えてください
-const firebaseConfig = {
+　　const firebaseConfig = {
     apiKey: "AIzaSyDWcumv9qBQcfKk48T20vA6Ipp65eYX34E",
     authDomain: "wedding-quiz-0606.firebaseapp.com",
     projectId: "wedding-quiz-0606",
