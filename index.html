@@ -767,6 +767,7 @@
         <div id="formMessage" class="message"></div>
       </div>
 
+
       <div id="completePanel" class="panel complete" style="display:none;">
         <div class="complete-image-wrap">
           <img src="./couple_chair.png" alt="投票完了">
@@ -776,14 +777,9 @@
         <button class="admin-button" onclick="resetForAnotherVote()">別の人が投票する</button>
       </div>
 
-<div id="completePanel" class="panel complete" style="display:none;">
-        <div class="complete-image-wrap">
-          <img src="./couple_chair.png" alt="投票完了">
-        </div>
-        <h2>投票完了したよ。</h2>
-        <p>披露宴中盤の結果発表をお楽しみに！</p>
-        <button class="admin-button" onclick="resetForAnotherVote()">別の人が投票する</button>
-      </div>
+</div>
+</div>
+</div>
 
 <div class="bottom-characters">
         <div class="mini-row">
@@ -859,7 +855,7 @@
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     // ★ここをFirebaseの設定値に置き換えてください
-　　const firebaseConfig = {
+    const firebaseConfig = {
     apiKey: "AIzaSyDWcumv9qBQcfKk48T20vA6Ipp65eYX34E",
     authDomain: "wedding-quiz-0606.firebaseapp.com",
     projectId: "wedding-quiz-0606",
@@ -1014,12 +1010,11 @@
 
         document.getElementById("voteButton").disabled = false;
         document.getElementById("voteButton").textContent = "投票する！ VOTE NOW";
-        document.getElementById("votePage").style.display = "none";
-        document.getElementById("adminPage").style.display = "none";
+        document.getElementById("formPanel").style.display = "none";
         document.getElementById("completePanel").style.display = "block";
         document.getElementById("voteTab").classList.add("active");
         document.getElementById("adminTab").classList.remove("active");
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        document.getElementById("completePanel").scrollIntoView({ behavior: "smooth", block: "start" });
       } catch (error) {
         console.error(error);
         showMessage("formMessage", "送信に失敗しました。電波を確認してもう一度お願いします。");
