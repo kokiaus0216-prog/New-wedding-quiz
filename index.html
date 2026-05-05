@@ -781,7 +781,7 @@
 </div>
 </div>
 
-<div class="bottom-characters">
+<div id="bottomCharacters" class="bottom-characters">
         <div class="mini-row">
           <img class="character" src="./koki.png" alt="こうき">
           <div class="speech">予想できたら投票ボタンを押してね！</div>
@@ -950,6 +950,7 @@
 
     window.showVote = function() {
       document.getElementById("heroSection").style.display = "block";
+      document.getElementById("bottomCharacters").style.display = "grid";
       document.getElementById("completePanel").style.display = "none";
       document.getElementById("votePage").style.display = "block";
       document.getElementById("adminPage").style.display = "none";
@@ -959,6 +960,7 @@
 
     window.showAdmin = function() {
       document.getElementById("heroSection").style.display = "none";
+      document.getElementById("bottomCharacters").style.display = "none";
       document.getElementById("completePanel").style.display = "none";
       document.getElementById("votePage").style.display = "none";
       document.getElementById("adminPage").style.display = "block";
