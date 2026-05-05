@@ -708,7 +708,7 @@
       <button class="tab" id="adminTab" onclick="showAdmin()">管理・結果</button>
     </div>
 
-    <section class="hero">
+    <section id="heroSection" class="hero">
       <span class="label">WEDDING QUIZ SPECIAL</span>
       <h1>
         <span class="line1">こうきとかえでの</span>
@@ -949,6 +949,7 @@
     }
 
     window.showVote = function() {
+      document.getElementById("heroSection").style.display = "block";
       document.getElementById("completePanel").style.display = "none";
       document.getElementById("votePage").style.display = "block";
       document.getElementById("adminPage").style.display = "none";
@@ -957,6 +958,7 @@
     }
 
     window.showAdmin = function() {
+      document.getElementById("heroSection").style.display = "none";
       document.getElementById("completePanel").style.display = "none";
       document.getElementById("votePage").style.display = "none";
       document.getElementById("adminPage").style.display = "block";
