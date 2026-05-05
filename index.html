@@ -795,8 +795,6 @@
 
     <section id="adminPage" class="panel admin" style="display:none;">
       <div id="adminLogin" class="admin-login">
-        <h2>🔐 管理画面</h2>
-        <p class="small">管理者だけが見るページです。</p>
         <input id="passcode" type="password" placeholder="管理パスコード">
         <button class="admin-button" onclick="loginAdmin()">管理画面を開く</button>
         <div id="loginMessage" class="message"></div>
@@ -962,6 +960,8 @@
       document.getElementById("completePanel").style.display = "none";
       document.getElementById("votePage").style.display = "none";
       document.getElementById("adminPage").style.display = "block";
+      document.getElementById("adminLogin").style.display = "block";
+      document.getElementById("adminContent").style.display = "none";
       document.getElementById("voteTab").classList.remove("active");
       document.getElementById("adminTab").classList.add("active");
     }
